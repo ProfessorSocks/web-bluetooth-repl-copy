@@ -144,13 +144,15 @@ async function transmitReplData() {
     }
 
     replDataTxInProgress = true;
-
+//this structures the payload
     const payload = replDataTxQueue.slice(0, max_mtu);
-
+    console.log(`payload from replDataTxQueue created, payload is ${payload}`)
+//this sends it to the characterisitc while structuring it 
     await replRxCharacteristic.writeValueWithoutResponse(new Uint8Array(payload))
         .then(() => {
             replDataTxQueue.splice(0, payload.length);
             replDataTxInProgress = false;
+            console.log(`written successfuly`)
             return;
         })
 

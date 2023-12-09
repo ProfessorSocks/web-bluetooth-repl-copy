@@ -1,5 +1,5 @@
 import { connect, disconnect, isConnected } from "./bluetooth.js";
-import { replHandleKeyPress, replResetConsole, replFocusCursor } from "./repl.js";
+import { replHandleKeyPress, replResetConsole, replFocusCursor, replSend } from "./repl.js";
 import { checkForUpdates, startFirmwareUpdate, startFpgaUpdate } from "./update.js"
 import { startNordicDFU } from "./nordicdfu.js"
 
@@ -22,6 +22,7 @@ const ctrlCButton = document.getElementById('ctrlCButton');
 const ctrlDButton = document.getElementById('ctrlDButton');
 const ctrlEButton = document.getElementById('ctrlEButton');
 const clearButton = document.getElementById('clearButton');
+const loginButton = document.getElementById('loginButton');
 
 export async function ensureConnected() {
 
@@ -69,7 +70,7 @@ export function onDisconnect() {
 setInterval(function () {
     replFocusCursor();
 }, 1000);
-
+//imports replHandleKeyPress from repl.js
 ctrlAButton.addEventListener('click', () => {
     replHandleKeyPress("a", true, false);
 });
@@ -89,11 +90,26 @@ ctrlDButton.addEventListener('click', () => {
 ctrlEButton.addEventListener('click', () => {
     replHandleKeyPress("e", true, false);
 });
-
+//if metakey true not ctrl false
 clearButton.addEventListener('click', () => {
     replHandleKeyPress("k", false, true);
 });
 
+loginButton.addEventListener('click', () => {
+    replSend("logged_in = True")
+    replHandleKeyPress("Enter",false, false)
+    replSend("main()")
+    replHandleKeyPress("Enter",false, false)
+
+
+    // replConsole.value = "main()"
+    // replHandleKeyPress("Enter",false,false )
+});
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+//this is called from upload button at index.html
 window.updateFpgaFromFile = (input) => {
 
     if (input.files.length === 0) {

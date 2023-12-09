@@ -55,6 +55,7 @@ export async function replSend(string) {
 
     // Encode the UTF-8 string into an array and populate the buffer
     const encoder = new TextEncoder('utf-8');
+    //replDataTxQueue is from bluetooth.js 
     replDataTxQueue.push.apply(replDataTxQueue, encoder.encode(string));
 
     // Return a promise which calls a function that'll eventually run when the
@@ -144,7 +145,9 @@ export function replHandleKeyPress(key, ctrlKey, metaKey) {
     if (replRawModeEnabled) {
         return true;
     }
-
+    //https://donsnotes.com/tech/charsets/ascii.html 
+    //to understand the replSend() parameters
+// if ctrl is pressed run the switch
     if (ctrlKey) {
         switch (key) {
 
@@ -253,6 +256,7 @@ export function replHandleKeyPress(key, ctrlKey, metaKey) {
         case 'Enter':
             // Send End key before sending \r
             replSend('\x1B[F\r');
+            console.log("enter pressed")
             break;
 
         default:
@@ -288,7 +292,7 @@ replConsole.addEventListener('beforeinput', (event) => {
 
     // Convert LF to CR in the case of Unix style line endings
     string = string.replaceAll('\n', '\r');
-
+//
     replSend(string);
     event.preventDefault();
 });
