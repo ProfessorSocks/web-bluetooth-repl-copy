@@ -96,9 +96,7 @@ clearButton.addEventListener('click', () => {
 });
 
 loginButton.addEventListener('click', () => {
-    replSend("logged_in = True")
-    replHandleKeyPress("Enter",false, false)
-    replSend("main()")
+    replSend("logging_in_func()")
     replHandleKeyPress("Enter",false, false)
 
 

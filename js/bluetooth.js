@@ -124,7 +124,7 @@ export async function transmitNordicDfuControlData(bytes) {
 export async function transmitNordicDfuPacketData(bytes) {
     await nordicDfuPacketCharacteristic.writeValueWithoutResponse(new Uint8Array(bytes));
 }
-
+//called from 'characteristicvaluechanged' event listener above //line 89
 function receiveReplData(event) {
 
     // Decode the byte array into a UTF-8 string
